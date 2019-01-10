@@ -68,7 +68,7 @@ class App extends Component {
             {...props}
             firstName={firstName}
             lastName={lastName}
-            buttonLabel1="Nie wiem czy ten guzik jest potrzebny"
+            buttonLabel1="Dodaj sprzęt"
             buttonLink1="/"
             buttonLabel2="Wyloguj"
             buttonLink2="/"

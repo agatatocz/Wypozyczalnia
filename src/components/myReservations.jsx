@@ -5,18 +5,23 @@ class MyReservations extends Component {
     reservations: {}
   };
 
-  componentWillMount() {
+  componentDidMount() {
     var formData = new FormData();
-    formData.append("userId", this.props.userId);
-    fetch("http://localhost/php1/api/myReservations.php", {
+    //formData.append("userId", this.props.userId);
+    formData.append("userId", "");
+    //console.log("userID: ", this.props.userId);
+    fetch("http://localhost/BD2/api/5_copy.php", {
       method: "POST",
       body: formData
     })
       .then(response => response.json())
       .then(response => {
-        this.setState({ reservations: response });
+        console.log("odpowiedz: ", response);
+        //    const { reservations } = response;
+        //    this.setState({ reservations });
+        //this.setState({ reservations: response });
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error, "błąd"));
   }
 
   renderCancelButton = (reservation, key) => {
@@ -25,25 +30,13 @@ class MyReservations extends Component {
         <td>
           <button
             className="btn btn-danger"
-            onClick={e => this.cancelReservation(reservation, key, e)}
+            onClick={() => this.cancelReservation(reservation, key)}
           >
             Anuluj
           </button>
         </td>
       );
     else return <td />;
-  };
-
-  renderReservations = () => {
-    const { reservations } = this.state;
-    let rows = [];
-    for (let key in reservations) {
-      if (reservations.hasOwnProperty(key)) {
-        console.log(reservations[key], key);
-        rows.push(this.renderSingleReservation(reservations[key], key));
-      }
-    }
-    console.log(rows);
   };
 
   renderSingleReservation = (reservation, key) => {
@@ -57,26 +50,25 @@ class MyReservations extends Component {
     );
   };
 
-  cancelReservation = (reservation, key, e) => {
-    console.log(e);
-    console.log(reservation);
-    console.log(reservation.reservationId);
-
-    const event = { ...e };
-    const reservationId =
-      event.currentTarget.parentNode.parentNode.children[0].innerText;
-
-    var formData = new FormData();
+  cancelReservation = (reservation, key) => {
+    if (
+      !window.confirm(
+        `Aby anulować rezerwację ${reservation.reservationId} wciśnij OK.`
+      )
+    )
+      return;
+    let formData = new FormData();
     formData.append("reservationId", reservation.reservationId);
-    fetch("http://localhost/php1/api/cancelReservation.php", {
+    fetch("http://localhost/BD2/api/cancelReservation.php", {
       method: "POST",
       body: formData
     })
       .then(response => response.json())
       .then(response => {
         if (response.success) {
-          console.log(key);
-          //tu trzeba zrobić coś, żeby zmienić status tej rezerwacji w state i wtedy powinien zniknąć guzik
+          let reservations = { ...this.state.reservations };
+          reservations[key].status = "anulowana";
+          this.setState({ reservations });
         } else alert("Nie udało się dokonać operacji");
       })
       .catch(error => console.log(error));
@@ -100,7 +92,14 @@ class MyReservations extends Component {
               <th />
             </tr>
           </thead>
-          <tbody>{this.renderReservations()}</tbody>
+          <tbody>
+            {Object.values(reservations).map((reservation, i) =>
+              this.renderSingleReservation(
+                reservation,
+                Object.keys(reservations)[i]
+              )
+            )}
+          </tbody>
         </table>
       </div>
     );

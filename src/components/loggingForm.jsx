@@ -23,7 +23,7 @@ class LoggingForm extends Form {
     var formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
-    fetch("http://localhost/php1/api/demo.php", {
+    fetch("http://localhost/BD2/api/demo.php", {
       method: "POST",
       body: formData
     })

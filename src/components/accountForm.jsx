@@ -56,7 +56,18 @@ class AccountForm extends Form {
   };
 
   doSubmit = () => {
-    /*
+    const {
+      firstName,
+      lastName,
+      idNumber,
+      street,
+      homeNumber,
+      town,
+      zipCode,
+      phoneNumber,
+      username,
+      password
+    } = this.state.data;
     //kod tworzący konto
     var formData = new FormData();
     formData.append("firstName", firstName);
@@ -70,7 +81,7 @@ class AccountForm extends Form {
     formData.append("username", username);
     formData.append("password", password);
     //wpisać odpowiedni adres
-    fetch("http://localhost/php1/api/demo.php", {
+    fetch("http://localhost/BD2/api/demo.php", {
       method: "POST",
       body: formData
     })
@@ -78,9 +89,12 @@ class AccountForm extends Form {
       .then(response => response.json())
       .then(response => {
         //w tym miejscu powinien być kod, który coś zrobi w zależności od odpowiedzi czyli filtrowanie
+        if (response.success) {
+          alert("Konto zostało utworzone - możesz się zalogować.");
+          this.props.history.replace(`/login`);
+        }
       })
       .catch(error => console.log(error));
-*/
   };
   render() {
     return (

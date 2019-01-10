@@ -5,10 +5,9 @@ import SubmitButton from "./../common/submitButton";
 
 class EquipmentCatalog extends Component {
   state = {
-    categories: ["katA", "katB", "katC"],
-    producers: ["prodA", "prodB", "prodC"],
-    models: ["modA", "modB", "modC"],
-    ids: ["idA", "idB", "idC"],
+    categories: [],
+    producers: [],
+    models: [],
 
     filters: {
       category: "",
@@ -22,16 +21,20 @@ class EquipmentCatalog extends Component {
     equipmentList: []
   };
 
-  componentWillMount() {
-    //tu dać odpowiedni adres do pliku, który zwraca wszystkie kategorie, producentów, modele, id
-    fetch("http://localhost/php1/api/demo.php")
+  componentDidMount() {
+    //tu dać odpowiedni adres do pliku, który zwraca wszystkie kategorie, producentów, modele
+    fetch("http://localhost/BD2/api/1.php")
       //tu otrzymuję odpowiedź od serwera
       .then(response => response.json())
       .then(response => {
-        // const { categories, producers, models, ids } = response;
-        // this.setState({ categories, producers, models, ids });
-        const { categories } = response;
-        this.setState({ categories: Object.values(categories) });
+        //  console.log(response);
+        const { categories, producers, models } = response;
+        categories.unshift("");
+        producers.unshift("");
+        models.unshift("");
+        this.setState({ categories, producers, models });
+        //const { categories } = response;
+        //this.setState({ categories: Object.values(categories) });
         //console.log(Object.values(response.categories));
       })
       .catch(error => console.log(error));
@@ -54,7 +57,7 @@ class EquipmentCatalog extends Component {
 
     if (
       //sprawdzenie czy podane daty mają sens
-      (startDate === "" && endDate === "") ||
+      !(startDate === "" && endDate === "") ||
       chosenEndDate.getTime() < today.getTime() ||
       chosenEndDate.getTime() < chosenStartDate.getTime() ||
       chosenStartDate.getTime() < today.getTime()
@@ -69,15 +72,14 @@ class EquipmentCatalog extends Component {
       else properDates = false;
     } else properDates = true;
 
-    if (properDates) {
-      console.log("poprawne daty");
-      //kod sprawdzania dostępności
-    } else {
+    if (!properDates) {
       alert("Błędny przedział czasowy");
+      return;
     }
 
     //kod wyszukiwania
-    //powinien wyciągać z bazy sprzęty i dodwać je do tablicy equipmentList w state, wtedy renderEquipmentList je wyświetli
+    //powinien wyciągać z bazy sprzęty i dodwać je do tablicy equipmentList w state,
+    //wtedy renderEquipmentList je wyświetli
     var formData = new FormData();
     formData.append("category", category);
     formData.append("producer", producer);
@@ -86,13 +88,14 @@ class EquipmentCatalog extends Component {
     formData.append("chosenStartDate", chosenStartDate);
     formData.append("chosenEndDate", chosenEndDate);
     //wpisać odpowiedni adres
-    fetch("http://localhost/php1/api/demo.php", {
+    fetch("http://localhost/BD2/api/demo.php", {
       method: "POST",
       body: formData
     })
       //tu otrzymuję odpowiedź od serwera
       .then(response => response.json())
       .then(response => {
+        console.log(response);
         //w tym miejscu powinien być kod, który coś zrobi w zależności od odpowiedzi czyli filtrowanie
       })
       .catch(error => console.log(error));
@@ -147,11 +150,13 @@ class EquipmentCatalog extends Component {
                 onChange={this.handleChange}
               />
             </div>
+
             <div className="col">
-              <Select
+              <Input
+                type="text"
                 name="id"
                 label="ID"
-                values={this.state.ids}
+                value={filters.id}
                 onChange={this.handleChange}
               />
             </div>
