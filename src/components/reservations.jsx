@@ -35,14 +35,14 @@ class Reservations extends Form {
     reservationId: Joi.string().allow(""),
     startDate: Joi.date().allow(""),
     endDate: Joi.date().allow(""),
-    equipmentId: Joi.string().allow(""),
+    equipmentId: Joi.number().integer().allow(""),
     clientId: Joi.string().allow(""),
     status: Joi.string().allow(""),
     decision: Joi.string().allow(""),
-    minCost: Joi.number()
+    minCost: Joi.number().integer()
       .allow("")
       .label("Koszt"),
-    maxCost: Joi.number()
+    maxCost: Joi.number().integer()
       .allow("")
       .label("Koszt")
   };
@@ -88,12 +88,13 @@ class Reservations extends Form {
     formData.append("minCost", minCost);
     formData.append("maxCost", maxCost);
 
-    fetch("http://localhost/BD2/api/myReservations.php", {
+    fetch("http://localhost/BD2/api/9.php", {
       method: "POST",
       body: formData
     })
       .then(response => response.json())
       .then(response => {
+        console.log("9", response);
         this.setState({ reservations: response, submitted: true });
       })
       .catch(error => console.log(error));
@@ -144,14 +145,14 @@ class Reservations extends Form {
 
   handleEdit = reservation => {
     let reservations = { ...this.state.reservations };
-    reservations[reservation.reservationId].editing = true;
+    reservations[reservation.id].editing = true;
     this.setState({ reservations });
   };
 
   setStatusAndDecision = (reservation, status, decision) => {
     let reservations = { ...this.state.reservations };
-    if (status) reservations[reservation.reservationId].status = status;
-    if (decision) reservations[reservation.reservationId].decision = decision;
+    if (status) reservations[reservation.id].status = status;
+    if (decision) reservations[reservation.id].decision = decision;
     this.setState({ reservations });
   };
 
@@ -169,12 +170,12 @@ class Reservations extends Form {
 
     //jeśli nie wybrano nowego stausu lub decyzji, użyjemy starych
     if (_.isEmpty(editForm.status)) {
-      editForm.status = reservations[reservation.reservationId].status;
+      editForm.status = reservations[reservation.id].status;
       this.setState({ editForm });
     }
 
     if (_.isEmpty(editForm.decision)) {
-      editForm.decision = reservations[reservation.reservationId].decision;
+      editForm.decision = reservations[reservation.id].decision;
       this.setState({ editForm });
     }
 
@@ -185,17 +186,18 @@ class Reservations extends Form {
     var formData = new FormData();
     formData.append("status", status);
     formData.append("decision", decision);
-    formData.append("reservationId", reservation.reservationId);
-    fetch("http://localhost/BD2/api/myReservations.php", {
+    formData.append("reservationId", reservation.id);
+    fetch("http://localhost/BD2/api/8.php", {
       method: "POST",
       body: formData
     })
       .then(response => response.json())
       .then(response => {
+        console.log(response);
         if (!response.success) {
           alert(
             `Ups! Wystąpił błąd - nie udało się wprowadzić zmian w rezerwacji ${
-              reservation.reservationId
+            reservation.id
             }`
           );
           this.setStatusAndDecision(
@@ -207,7 +209,7 @@ class Reservations extends Form {
       })
       .catch(error => alert(error));
 
-    reservations[reservation.reservationId].editing = false;
+    reservations[reservation.id].editing = false;
     this.setState({ reservations });
     this.resetEditForm();
   };
@@ -234,9 +236,9 @@ class Reservations extends Form {
               </tr>
             </thead>
             <tbody>
-              {Object.values(reservations).map((reservation, i) => (
-                <React.Fragment key={i}>
-                  <tr key={i}>
+              {Object.values(reservations).map((reservation) => (
+                <React.Fragment key={reservation.id}>
+                  <tr key={reservation.id}>
                     {Object.values(reservation).map((data, j) =>
                       _.isBoolean(data) ? null : <td key={j}>{data}</td>
                     )}

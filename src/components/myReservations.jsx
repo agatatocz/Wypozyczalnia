@@ -2,30 +2,25 @@ import React, { Component } from "react";
 
 class MyReservations extends Component {
   state = {
-    reservations: {}
+    reservations: []
   };
 
   componentDidMount() {
     var formData = new FormData();
-    //formData.append("userId", this.props.userId);
-    formData.append("userId", "");
-    //console.log("userID: ", this.props.userId);
-    fetch("http://localhost/BD2/api/5_copy.php", {
+    formData.append("userId", this.props.userId);
+    fetch("http://localhost/BD2/api/5.php", {
       method: "POST",
       body: formData
     })
       .then(response => response.json())
       .then(response => {
-        console.log("odpowiedz: ", response);
-        //    const { reservations } = response;
-        //    this.setState({ reservations });
-        //this.setState({ reservations: response });
+        this.setState({ reservations: response });
       })
       .catch(error => console.log(error, "błąd"));
   }
 
   renderCancelButton = (reservation, key) => {
-    if (reservation.status === "utworzona")
+    if (reservation.status === "Utworzona")
       return (
         <td>
           <button
@@ -39,35 +34,35 @@ class MyReservations extends Component {
     else return <td />;
   };
 
-  renderSingleReservation = (reservation, key) => {
+  renderSingleReservation = (reservation) => {
     return (
-      <tr key={key}>
+      <tr key={reservation.id}>
         {Object.values(reservation).map((data, i) => (
           <td key={i}>{data}</td>
         ))}
-        {this.renderCancelButton(reservation, key)}
+        {this.renderCancelButton(reservation)}
       </tr>
     );
   };
 
-  cancelReservation = (reservation, key) => {
+  cancelReservation = (reservation) => {
     if (
       !window.confirm(
-        `Aby anulować rezerwację ${reservation.reservationId} wciśnij OK.`
+        `Aby anulować rezerwację ${reservation.id} wciśnij OK.`
       )
     )
       return;
     let formData = new FormData();
-    formData.append("reservationId", reservation.reservationId);
-    fetch("http://localhost/BD2/api/cancelReservation.php", {
+    formData.append("reservationId", reservation.id);
+    fetch("http://localhost/BD2/api/7.php", {
       method: "POST",
       body: formData
     })
       .then(response => response.json())
       .then(response => {
-        if (response.success) {
-          let reservations = { ...this.state.reservations };
-          reservations[key].status = "anulowana";
+        if (response) {
+          let reservations = [...this.state.reservations];
+          reservations.find(res => res.id === reservation.id).status = "Anulowana";
           this.setState({ reservations });
         } else alert("Nie udało się dokonać operacji");
       })
@@ -76,6 +71,7 @@ class MyReservations extends Component {
 
   render() {
     const { reservations } = this.state;
+    if (!reservations.length) return <div className="container"><h3>Nie masz jeszcze żadnych rezerwacji.</h3></div>;
     return (
       <div className="container">
         <h3>Moje rezerwacje:</h3>
@@ -93,12 +89,8 @@ class MyReservations extends Component {
             </tr>
           </thead>
           <tbody>
-            {Object.values(reservations).map((reservation, i) =>
-              this.renderSingleReservation(
-                reservation,
-                Object.keys(reservations)[i]
-              )
-            )}
+            {reservations.map((reservation, i) =>
+              this.renderSingleReservation(reservation, i))}
           </tbody>
         </table>
       </div>

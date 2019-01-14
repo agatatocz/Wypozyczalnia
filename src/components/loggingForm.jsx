@@ -23,14 +23,13 @@ class LoggingForm extends Form {
     var formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
-    fetch("http://localhost/BD2/api/demo.php", {
+    fetch("http://localhost/BD2/api/3.php", {
       method: "POST",
       body: formData
     })
       //tu otrzymuję odpowiedź od serwera
       .then(response => response.json())
       .then(response => {
-        //w tym miejscu powinien być kod, który coś zrobi w zależności od odpowiedzi
         let { success, accountType, firstName, lastName, userId } = response;
         let user = {
           accountType: accountType,

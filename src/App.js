@@ -7,6 +7,7 @@ import AccountForm from "./components/accountForm";
 import Header from "./components/header";
 import MyReservations from "./components/myReservations";
 import Reservations from "./components/reservations";
+import AddEquipmentForm from './components/addEqiupmentForm';
 
 class App extends Component {
   state = {
@@ -34,7 +35,7 @@ class App extends Component {
     const { accountType, firstName, lastName } = this.state.user;
     let header;
     switch (accountType) {
-      case "client":
+      case "klient":
         header = (
           <Header
             {...props}
@@ -48,7 +49,7 @@ class App extends Component {
           />
         );
         break;
-      case "worker":
+      case "pracownik":
         header = (
           <Header
             {...props}
@@ -62,14 +63,14 @@ class App extends Component {
           />
         );
         break;
-      case "manager":
+      case "kierownik":
         header = (
           <Header
             {...props}
             firstName={firstName}
             lastName={lastName}
             buttonLabel1="Dodaj sprzęt"
-            buttonLink1="/"
+            buttonLink1="/add_equipment"
             buttonLabel2="Wyloguj"
             buttonLink2="/"
             onClick2={this.resetAppState}
@@ -162,6 +163,24 @@ class App extends Component {
                 onClick2={this.resetAppState}
               />
               <Reservations {...props} />
+            </React.Fragment>
+          )}
+        />
+        <Route
+          path="/add_equipment"
+          render={props => (
+            <React.Fragment>
+              <Header
+                {...props}
+                firstName={firstName}
+                lastName={lastName}
+                buttonLabel1="Katalog sprzętu"
+                buttonLink1="/manager"
+                buttonLabel2="Wyloguj"
+                buttonLink2="/"
+                onClick2={this.resetAppState}
+              />
+              <AddEquipmentForm {...props} />
             </React.Fragment>
           )}
         />
