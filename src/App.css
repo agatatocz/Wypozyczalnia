@@ -23,6 +23,10 @@ header h2 {
   font-weight: 400;
 }
 
+table th{
+  
+}
+
 .searchForm,
 .loggingForm,
 .accountForm
@@ -65,14 +69,12 @@ header h2 {
   margin-top: 10px;
 }
 
-/* table,
-th,
-td {
-  border: 1px solid black;
-  padding: 8px;
-  text-align: center;
-} */
-
 .form-p {
   margin-bottom: 0;
+}
+
+.td-button-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
 }

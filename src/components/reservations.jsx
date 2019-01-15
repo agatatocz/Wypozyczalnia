@@ -94,7 +94,6 @@ class Reservations extends Form {
     })
       .then(response => response.json())
       .then(response => {
-        console.log("9", response);
         this.setState({ reservations: response, submitted: true });
       })
       .catch(error => console.log(error));

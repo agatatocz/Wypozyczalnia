@@ -87,7 +87,7 @@ class App extends Component {
             buttonLink1="/login"
             buttonLabel2="Utwórz konto"
             buttonLink2="/accountForm"
-            onClick2={this.resetAppState}
+          //  onClick2={this.resetAppState}
           />
         );
         break;
@@ -97,7 +97,7 @@ class App extends Component {
   };
 
   render() {
-    const { accountType, firstName, lastName } = this.state.user;
+    const { accountType, firstName, lastName, userId } = this.state.user;
     return (
       <Switch>
         <Route
@@ -189,7 +189,7 @@ class App extends Component {
           render={props => (
             <React.Fragment>
               {this.renderHeader(props)}
-              <EquipmentCatalog {...props} />
+              <EquipmentCatalog {...props} accountType={accountType} userId={userId} />
             </React.Fragment>
           )}
         />
