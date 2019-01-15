@@ -39,7 +39,6 @@ class EquipmentForm extends Form {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response);
         this.props.setEquipmentList(response);
         this.props.setSubmitted(true);
       })

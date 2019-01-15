@@ -36,7 +36,7 @@ class EquipmentCatalog extends Component {
 
   hideAdditionalRow = equipment => {
     const equipmentList = [...this.state.equipmentList];
-    const target = equipmentList.find(item => item.id_egzemplarza === equipment.id_egzemplarza);
+    const target = equipmentList.find(item => item.id === equipment.id);
     target.showDetails = false;
     target.showAvailable = false;
     target.showRent = false;
@@ -48,7 +48,7 @@ class EquipmentCatalog extends Component {
     this.changeShowState(equipment, "showDetails");
 
     const formData = new FormData();
-    formData.append("equipmentId", equipment.id_egzemplarza);
+    formData.append("equipmentId", equipment.id);
     //tu dać odpowiedni link
     fetch("http://localhost/BD2/api/details.php", {
       method: "POST",
@@ -64,7 +64,7 @@ class EquipmentCatalog extends Component {
 
   changeShowState = (equipment, key) => {
     const equipmentList = [...this.state.equipmentList];
-    const target = equipmentList.find(item => item.id_egzemplarza === equipment.id_egzemplarza);
+    const target = equipmentList.find(item => item.id === equipment.id);
     if (!target[key]) this.hideAdditionalRow(equipment);
     target[key] = !target[key];
     this.setState({ equipmentList });
@@ -72,7 +72,7 @@ class EquipmentCatalog extends Component {
 
   setEquipmentProp = (equipment, key, value) => {
     const equipmentList = [...this.state.equipmentList];
-    const target = equipmentList.find(item => item.id_egzemplarza === equipment.id_egzemplarza);
+    const target = equipmentList.find(item => item.id === equipment.id);
     target[key] = value;
     this.setState({ equipmentList });
   }
@@ -81,7 +81,7 @@ class EquipmentCatalog extends Component {
     if (!window.confirm(`Aby usunąć egzemplarz sprzętu wciśnij OK.`)) return;
 
     const formData = new FormData();
-    formData.append("equipmentId", equipment.id_egzemplarza);
+    formData.append("equipmentId", equipment.id);
 
     //tu dać odpowiedni link
     fetch("http://localhost/BD2/api/available.php", {
@@ -92,7 +92,7 @@ class EquipmentCatalog extends Component {
       .then(response => {
         if (response) {
           let equipmentList = [...this.state.equipmentList];
-          equipmentList = equipmentList.filter(item => item.id_egzemplarza !== equipment.id_egzemplarza);
+          equipmentList = equipmentList.filter(item => item.id !== equipment.id);
           this.setState({ equipmentList });
         }
         else alert("Nie udało się dokonać operacji");
@@ -103,7 +103,7 @@ class EquipmentCatalog extends Component {
 
   renderDetails = (equipment) => {
     return (
-      <tr key={equipment.id_egzemplarza}>
+      <tr key={equipment.id}>
         <td colSpan="8">
           <h6>Opis:</h6>
           <p>{equipment.description}</p>
@@ -116,12 +116,12 @@ class EquipmentCatalog extends Component {
   renderRow = (equipment) => {
     const { accountType } = this.props;
     return (<React.Fragment>
-      <td>{equipment.id_egzemplarza}</td>
-      <td>{equipment.kategoria}</td>
-      <td>{equipment.producent}</td>
+      <td>{equipment.id}</td>
+      <td>{equipment.category}</td>
+      <td>{equipment.producer}</td>
       <td>{equipment.model}</td>
-      <td>{equipment.kaucja}</td>
-      <td>{equipment.cena_wyp}</td>
+      <td>{equipment.deposit}</td>
+      <td>{equipment.price}</td>
       <td className="td-button-container">
         <button className="btn btn-info m-1" onClick={() => this.handleDetails(equipment)}>Szczegóły</button>
         <button className="btn btn-primary m-1" onClick={() => this.changeShowState(equipment, "showAvailable")}>Dostępność</button>

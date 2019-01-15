@@ -64,7 +64,7 @@ class AvailableChcekForm extends Form {
         const { equipment } = this.props;
         if (this.validateDates()) {
             const formData = new FormData();
-            formData.append("equipmentId", equipment.id_egzemplarza);
+            formData.append("equipmentId", equipment.id);
             formData.append("startDate", data.startDate);
             formData.append("endDate", data.endDate);
 
@@ -86,7 +86,7 @@ class AvailableChcekForm extends Form {
         const { data, availabe, submitted } = this.state;
         const { equipment } = this.props;
         return (
-            <tr key={equipment.id_egzemplarza}>
+            <tr key={equipment.id}>
                 <td colSpan="8">
                     <h6>Sprawdź dostępność:</h6>
                     <form>

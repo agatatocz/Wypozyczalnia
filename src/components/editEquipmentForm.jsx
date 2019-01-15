@@ -37,7 +37,7 @@ class EditEquipmentForm extends Form {
         const { equipment } = this.props;
 
         const formData = new FormData();
-        formData.append("equipmentId", equipment.id_egzemplarza);
+        formData.append("equipmentId", equipment.id);
         formData.append("category", data.category);
         formData.append("producer", data.producer);
         formData.append("model", data.model);
@@ -61,7 +61,7 @@ class EditEquipmentForm extends Form {
         const { data, edited } = this.state;
         const { equipment } = this.props;
         return (
-            <tr key={equipment.id_egzemplarza}>
+            <tr key={equipment.id}>
                 <td colSpan="8">
                     <h6>Edytuj:</h6>
                     <form>
