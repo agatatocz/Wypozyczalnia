@@ -114,6 +114,7 @@ class AccountForm extends Form {
       //tu otrzymuję odpowiedź od serwera
       .then(response => response.json())
       .then(response => {
+        console.log(response);
         if (response.success) {
           alert("Konto zostało utworzone - możesz się zalogować.");
           console.log(response);

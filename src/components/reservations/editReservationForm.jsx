@@ -1,9 +1,8 @@
 import React from "react";
-import Form from "./../common/form";
+import Form from "../../common/form";
 import Joi from "joi-browser";
-import Input from "../common/input";
-import SubmitButton from "./../common/submitButton";
-import Select from "../common/select";
+import SubmitButton from "../../common/submitButton";
+import Select from "../../common/select";
 import _ from "lodash";
 
 class EditReservationForm extends Form {

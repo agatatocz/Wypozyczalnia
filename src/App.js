@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import "./App.css";
-import EquipmentCatalog from "./components/equipmentCatalog";
+import EquipmentCatalog from "./components/equipmentCatalog/equipmentCatalog";
 import LoggingForm from "./components/loggingForm";
 import { Route, Switch } from "react-router-dom";
 import AccountForm from "./components/accountForm";
 import Header from "./components/header";
 import MyReservations from "./components/myReservations";
-import Reservations from "./components/reservations";
-import AddEquipmentForm from './components/addEqiupmentForm';
+import Reservations from "./components/reservations/reservations";
+import AddEquipmentForm from "./components/equipmentCatalog/addEqiupmentForm";
 
 class App extends Component {
   state = {
@@ -87,7 +87,7 @@ class App extends Component {
             buttonLink1="/login"
             buttonLabel2="Utwórz konto"
             buttonLink2="/accountForm"
-          //  onClick2={this.resetAppState}
+            //  onClick2={this.resetAppState}
           />
         );
         break;
@@ -189,7 +189,11 @@ class App extends Component {
           render={props => (
             <React.Fragment>
               {this.renderHeader(props)}
-              <EquipmentCatalog {...props} accountType={accountType} userId={userId} />
+              <EquipmentCatalog
+                {...props}
+                accountType={accountType}
+                userId={userId}
+              />
             </React.Fragment>
           )}
         />

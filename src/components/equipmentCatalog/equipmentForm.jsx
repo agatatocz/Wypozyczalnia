@@ -1,9 +1,9 @@
 import React from "react";
-import Form from "../common/form";
+import Form from "../../common/form";
 import Joi from "joi-browser";
-import Input from "../common/input";
-import Select from "../common/select";
-import SubmitButton from "../common/submitButton";
+import Input from "../../common/input";
+import Select from "../../common/select";
+import SubmitButton from "../../common/submitButton";
 
 class EquipmentForm extends Form {
   state = {
@@ -43,7 +43,6 @@ class EquipmentForm extends Form {
         this.props.setSubmitted(true);
       })
       .catch(error => console.log(error));
-
   };
 
   render() {

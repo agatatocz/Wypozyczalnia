@@ -19,7 +19,7 @@ class LoggingForm extends Form {
 
   doSubmit = () => {
     const { username, password } = this.state.data;
-    // Przekazuję login i hasło
+
     var formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
@@ -27,7 +27,6 @@ class LoggingForm extends Form {
       method: "POST",
       body: formData
     })
-      //tu otrzymuję odpowiedź od serwera
       .then(response => response.json())
       .then(response => {
         let { success, accountType, firstName, lastName, userId } = response;
@@ -41,7 +40,9 @@ class LoggingForm extends Form {
         if (success) {
           this.props.history.replace(`/${accountType}`);
         } else {
-          alert("Nie znaleziono użytkownika w bazie.");
+          alert(
+            "Nie znaleziono użytkownika w bazie. Spróbuj wprowadzić login i hasło jeszcze raz lub utwórz konto, jeśli go nie posiadasz."
+          );
         }
       })
       .catch(error => console.log(error));

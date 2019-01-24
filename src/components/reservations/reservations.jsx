@@ -65,10 +65,11 @@ class Reservations extends Component {
             <thead>
               <tr>
                 <th>Numer rezerwacji</th>
-                <th>Data Utworzenia</th>
                 <th>Data początku wypożyczenia</th>
                 <th>Data końca wypożyczenia</th>
                 <th>ID egzemplarza sprzętu</th>
+                <th>ID klienta</th>
+                <th>Koszt wypożyczenia [zł]</th>
                 <th>Status rezerwacji</th>
                 <th>Decyzja o zwrocie kaucji</th>
                 <th />

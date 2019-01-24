@@ -1,7 +1,7 @@
 import React from "react";
-import Form from "../common/form";
+import Form from "../../common/form";
 import Joi from "joi-browser";
-import Select from "../common/select";
+import Select from "../../common/select";
 
 class ReservationsForm extends Form {
   state = {
@@ -94,12 +94,12 @@ class ReservationsForm extends Form {
             <div className="col">
               {this.renderInput(
                 "startDate",
-                "Data początku rezerwacji",
+                "Data początku wypożyczenia",
                 "date"
               )}
             </div>
             <div className="col">
-              {this.renderInput("endDate", "Data końca rezerwacji", "date")}
+              {this.renderInput("endDate", "Data końca wypożyczenia", "date")}
             </div>
             <div className="col">
               {this.renderInput(
